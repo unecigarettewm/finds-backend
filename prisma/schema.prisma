@@ -15,6 +15,7 @@ model User {
   email      String    @unique
   firstname  String?
   username   String?   @unique
+  password   String // saved as one way hash
   finds      Find[]
   avatar     String?
   created_at DateTime  @default(now())
