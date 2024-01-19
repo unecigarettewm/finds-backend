@@ -11,19 +11,52 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  email     String  @unique
-  firstname String?
-  username  String? @unique
-  finds     Find[]
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  firstname  String?
+  username   String?   @unique
+  finds      Find[]
+  avatar     String?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+  Saves      Save[]
 }
 
 model Find {
   id              Int      @id @default(autoincrement())
   review          String
-  rating          Int
+  rating          Decimal
   google_place_id String
   published       Boolean? @default(false)
-  author          User?    @relation(fields: [authorId], references: [id])
-  authorId        Int?
+  user            User?    @relation(fields: [userId], references: [id])
+  userId          Int?
+  images          String[]
+  Place           Place?   @relation(fields: [placeId], references: [id])
+  placeId         Int?
+  Saves           Save[]
+}
+
+model Place {
+  id              Int       @id @default(autoincrement())
+  google_place_id String    @unique
+  name            String
+  address         String
+  categories      String[]
+  google_maps_uri String
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+  deleted_at      DateTime?
+  finds           Find[]
+}
+
+model Save {
+  id         Int       @id @default(autoincrement())
+  user       User?     @relation(fields: [userId], references: [id])
+  userId     Int?
+  find       Find?     @relation(fields: [findId], references: [id])
+  findId     Int?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
 }
