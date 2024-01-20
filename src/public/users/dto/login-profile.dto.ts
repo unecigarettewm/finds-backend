@@ -1,12 +1,14 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
-import { Dto } from 'src/lib/dto/Dto';
 
-export class ProfileDto extends Dto<ProfileDto> {
+export class LoginProfileDto {
   @IsNumber()
   id: number;
 
   @IsString()
   username: string;
+
+  @IsString()
+  password: string;
 
   @IsString()
   email: string;
