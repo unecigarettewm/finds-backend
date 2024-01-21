@@ -13,7 +13,7 @@ datasource db {
 model User {
   id         Int       @id @default(autoincrement())
   email      String    @unique
-  firstname  String?
+  firstname  String
   username   String?   @unique
   password   String // saved as one way hash
   finds      Find[]
