@@ -7,13 +7,16 @@ import { ProfileDto } from '../users/dto/profile.dto';
 export class FindsService {
   constructor(private prisma: PrismaService) {}
 
-  async allFinds() {
+  async getAllFinds() {
     const finds = await this.prisma.find.findMany({
       where: {
         deleted_at: null,
       },
       include: {
         user: true,
+      },
+      orderBy: {
+        created_at: 'desc',
       },
     });
 
@@ -28,7 +31,6 @@ export class FindsService {
           user: new ProfileDto({
             id: e.user.id,
             username: e.user.username,
-            email: e.user.email,
             avatar: e.user.avatar,
           }),
         }),

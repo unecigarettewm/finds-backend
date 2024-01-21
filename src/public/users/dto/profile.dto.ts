@@ -9,9 +9,6 @@ export class ProfileDto extends Dto<ProfileDto> {
   username: string;
 
   @IsString()
-  email: string;
-
-  @IsString()
   @IsOptional()
   avatar?: string;
 }

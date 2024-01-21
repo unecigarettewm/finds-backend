@@ -5,9 +5,8 @@ import { FindsService } from './finds.service';
 export class FindsController {
   constructor(private readonly findsService: FindsService) {}
 
-  // get all finds
-  @Get('all-finds')
+  @Get('get-all-finds')
   async allFinds() {
-    return this.findsService.allFinds();
+    return this.findsService.getAllFinds();
   }
 }
