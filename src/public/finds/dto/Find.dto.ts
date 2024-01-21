@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Decimal } from '@prisma/client/runtime/library';
 import { IsDecimal, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Dto } from 'src/lib/dto/Dto';
@@ -20,7 +21,7 @@ export class FindDto extends Dto<FindDto> {
   @IsNotEmpty()
   googlePlaceId: string;
 
-  @IsString({ each: true })
+  @ApiProperty({ type: [String] })
   @IsNotEmpty()
   images: string[];
 
