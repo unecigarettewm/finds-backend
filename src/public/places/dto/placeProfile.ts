@@ -4,14 +4,17 @@ import { Dto } from 'src/lib/dto/Dto';
 import { FindDto } from 'src/public/finds/dto/Find.dto';
 
 export class PlaceProfileDto extends Dto<PlaceProfileDto> {
+  @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
   id: number;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   name: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   address: string;
@@ -20,10 +23,12 @@ export class PlaceProfileDto extends Dto<PlaceProfileDto> {
   @IsNotEmpty()
   categories: string[];
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   googleMapsUri: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   googlePlaceId: string;

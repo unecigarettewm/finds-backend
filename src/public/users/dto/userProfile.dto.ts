@@ -4,16 +4,20 @@ import { Dto } from 'src/lib/dto/Dto';
 import { FindDto } from 'src/public/finds/dto/Find.dto';
 
 export class UserProfileDto extends Dto<UserProfileDto> {
+  @ApiProperty()
   @IsNumber()
   id: number;
 
+  @ApiProperty()
   @IsString()
   username: string;
 
+  @ApiProperty()
   @IsString()
   @IsOptional()
   avatar?: string;
 
+  @ApiProperty()
   @IsNumber()
   followers: number;
 

@@ -2,6 +2,7 @@ import { Controller, Get, Logger, Param, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
+import { UserProfileDto } from './dto/userProfile.dto';
 
 @ApiTags('users')
 @Controller('user')
@@ -14,7 +15,7 @@ export class UsersController {
 
   @UseGuards(JwtGuard)
   @Get('profile/:id')
-  async getProfile(@Param('id') id: string) {
+  async getProfile(@Param('id') id: string): Promise<UserProfileDto> {
     return this.usersService.getUserProfile(Number(id));
   }
 }

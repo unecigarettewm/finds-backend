@@ -5,18 +5,22 @@ import { Dto } from 'src/lib/dto/Dto';
 import { ProfileDto } from 'src/public/users/dto/profile.dto';
 
 export class FindDto extends Dto<FindDto> {
+  @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
   id: number;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   review: string;
 
+  @ApiProperty()
   @IsDecimal()
   @IsNotEmpty()
   rating: Decimal;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   googlePlaceId: string;
@@ -25,6 +29,7 @@ export class FindDto extends Dto<FindDto> {
   @IsNotEmpty()
   images: string[];
 
+  @ApiProperty()
   @IsNotEmpty()
   user: ProfileDto;
 }

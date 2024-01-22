@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserDto } from './dto/createUser.dto';
 import * as bcrypt from 'bcrypt';
@@ -45,7 +45,7 @@ export class UsersService {
     });
 
     if (!profile) {
-      return new NotFoundException();
+      return null;
     }
 
     return new UserProfileDto({

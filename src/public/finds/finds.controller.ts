@@ -1,9 +1,7 @@
-import { Controller, Get, Logger, UseGuards } from '@nestjs/common';
+import { Controller, Get, Logger } from '@nestjs/common';
 import { FindsService } from './finds.service';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ReqUser } from 'src/auth/util/user.decorator';
-import { JwtUser, toUserId } from 'src/auth/util/dto/jwt-user.dto';
+import { FindDto } from './dto/Find.dto';
 
 @ApiTags('finds')
 @Controller('finds')
@@ -15,14 +13,7 @@ export class FindsController {
   }
 
   @Get('all')
-  async allFinds() {
+  async allFinds(): Promise<FindDto[]> {
     return this.findsService.getAllFinds();
-  }
-
-  @UseGuards(JwtGuard)
-  @Get('user-finds')
-  async userFinds(@ReqUser() user: JwtUser) {
-    const id = toUserId(user);
-    return this.findsService.getUserFinds(id);
   }
 }

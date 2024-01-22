@@ -26,7 +26,7 @@ export class PlacesService {
     });
 
     if (!place) {
-      return new NotFoundException();
+      return null;
     }
 
     return new PlaceProfileDto({
