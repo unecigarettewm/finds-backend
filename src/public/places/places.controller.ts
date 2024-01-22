@@ -1,7 +1,14 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { PlacesService } from './places.service';
+import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 
-@Controller('places')
+@Controller('place')
 export class PlacesController {
   constructor(private readonly placesService: PlacesService) {}
+
+  @UseGuards(JwtGuard)
+  @Get('finds/:id')
+  async getPlaceFinds(@Param('id') id: string) {
+    return this.placesService.getPlaceFinds(id);
+  }
 }

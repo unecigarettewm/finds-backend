@@ -22,7 +22,10 @@ export class AuthService {
   }
 
   async login(user: User) {
-    const payload = { username: user.email, sub: { name: user.firstname } };
+    const payload = {
+      username: user.email,
+      sub: { id: user.id },
+    };
 
     return {
       ...user,
@@ -34,7 +37,10 @@ export class AuthService {
   }
 
   async refreshToken(user: User) {
-    const payload = { username: user.email, sub: { name: user.firstname } };
+    const payload = {
+      username: user.email,
+      sub: { id: user.id },
+    };
 
     return {
       access_token: this.jwtService.sign(payload),

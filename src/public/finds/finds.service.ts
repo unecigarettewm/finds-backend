@@ -36,4 +36,35 @@ export class FindsService {
         }),
     );
   }
+
+  async getUserFinds(userId: number) {
+    const finds = await this.prisma.find.findMany({
+      where: {
+        userId,
+        deleted_at: null,
+      },
+      include: {
+        user: true,
+      },
+      orderBy: {
+        created_at: 'desc',
+      },
+    });
+
+    return finds.map(
+      (e) =>
+        new FindDto({
+          id: e.id,
+          review: e.review,
+          rating: e.rating,
+          googlePlaceId: e.google_place_id,
+          images: e.images,
+          user: new ProfileDto({
+            id: e.user.id,
+            username: e.user.username,
+            avatar: e.user.avatar,
+          }),
+        }),
+    );
+  }
 }

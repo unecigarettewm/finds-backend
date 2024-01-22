@@ -5,11 +5,16 @@ import { PrismaService } from 'src/prisma.service';
 export class PlacesService {
   constructor(private prisma: PrismaService) {}
 
-  async getPlaceDetails(googlePlaceId: string) {
+  async getPlaceFinds(googlePlaceId: string) {
     const place = await this.prisma.place.findFirst({
       where: {
-        google_place_id: {
-          equals: googlePlaceId,
+        google_place_id: googlePlaceId,
+      },
+      include: {
+        finds: {
+          include: {
+            user: true,
+          },
         },
       },
     });

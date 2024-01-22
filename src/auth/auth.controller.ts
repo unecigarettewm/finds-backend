@@ -4,7 +4,9 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 import { UsersService } from 'src/public/users/users.service';
 import { CreateUserDto } from 'src/public/users/dto/createUser.dto';
 import { RefreshJwtGuard } from './guards/refresh-jwt-auth';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
