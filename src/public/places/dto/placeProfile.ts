@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Dto } from 'src/lib/dto/Dto';
 import { FindDto } from 'src/public/finds/dto/Find.dto';
 
-export class PlaceDetailsDto extends Dto<PlaceDetailsDto> {
+export class PlaceProfileDto extends Dto<PlaceProfileDto> {
   @IsNumber()
   @IsNotEmpty()
   id: number;
@@ -28,6 +28,6 @@ export class PlaceDetailsDto extends Dto<PlaceDetailsDto> {
   @IsNotEmpty()
   googlePlaceId: string;
 
-  @IsNotEmpty()
-  finds: FindDto;
+  @ApiProperty({ type: [FindDto] })
+  finds: FindDto[];
 }
