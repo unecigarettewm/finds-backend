@@ -13,9 +13,9 @@ export class UsersController {
     this.logger = new Logger();
   }
 
-  @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   @Get('profile/:id')
-  async getProfile(@Param('id') id: string): Promise<UserProfileDto> {
-    return this.usersService.getUserProfile(Number(id));
+  async getProfileAndFinds(@Param('id') id: string): Promise<UserProfileDto> {
+    return this.usersService.getProfileAndFinds(Number(id));
   }
 }

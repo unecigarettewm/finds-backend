@@ -31,13 +31,16 @@ export class UsersService {
     });
   }
 
-  async getUserProfile(userId: number) {
+  async getProfileAndFinds(userId: number) {
     const profile = await this.prisma.user.findFirst({
       where: {
         id: userId,
       },
       include: {
         finds: {
+          include: {
+            place: true,
+          },
           orderBy: {
             created_at: 'desc',
           },
@@ -53,8 +56,29 @@ export class UsersService {
       id: profile.id,
       username: profile.username,
       avatar: profile.avatar,
-      followers: 0,
-      finds: [],
+      firstname: profile.firstname,
+      followers: 1600,
+      finds: profile.finds.map((find) => ({
+        id: find.id,
+        createdAt: find.created_at,
+        images: find.images,
+        place: {
+          id: find.place.id,
+          name: find.place.name,
+          address: find.place.address,
+          categories: find.place.categories,
+          googleMapsUri: find.place.google_maps_uri,
+          googlePlaceId: find.place.google_place_id,
+        },
+        rating: find.rating.toFixed(1),
+        review: find.review,
+        user: {
+          firstname: profile.firstname,
+          id: profile.id,
+          username: profile.username,
+          avatar: profile.avatar,
+        },
+      })),
     });
   }
 }
