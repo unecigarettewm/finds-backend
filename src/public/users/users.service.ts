@@ -57,7 +57,7 @@ export class UsersService {
       username: profile.username,
       avatar: profile.avatar,
       firstname: profile.firstname,
-      followers: 1600,
+      followers: 1623487,
       finds: profile.finds.map((find) => ({
         id: find.id,
         createdAt: find.created_at,
