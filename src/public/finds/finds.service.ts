@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { FindDto } from './dto/Find.dto';
-import { ProfileDto } from '../users/dto/profile.dto';
 
 @Injectable()
 export class FindsService {
@@ -14,6 +13,7 @@ export class FindsService {
       },
       include: {
         user: true,
+        place: true,
       },
       orderBy: {
         created_at: 'desc',
@@ -26,13 +26,22 @@ export class FindsService {
           id: e.id,
           review: e.review,
           rating: e.rating,
-          googlePlaceId: e.google_place_id,
+          place: {
+            id: e.place.id,
+            name: e.place.name,
+            address: e.place.address,
+            categories: e.place.categories,
+            googleMapsUri: e.place.google_maps_uri,
+            googlePlaceId: e.place.google_place_id,
+          },
           images: e.images,
-          user: new ProfileDto({
+          user: {
+            firstname: e.user.firstname,
             id: e.user.id,
             username: e.user.username,
             avatar: e.user.avatar,
-          }),
+          },
+          createdAt: e.created_at,
         }),
     );
   }

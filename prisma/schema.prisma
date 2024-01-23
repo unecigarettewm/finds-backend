@@ -21,7 +21,7 @@ model User {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
-  Saves      Save[]
+  saves      Save[]
 }
 
 model Find {
@@ -33,9 +33,9 @@ model Find {
   user            User?     @relation(fields: [userId], references: [id])
   userId          Int?
   images          String[]  @default([])
-  Place           Place?    @relation(fields: [placeId], references: [id])
+  place           Place?    @relation(fields: [placeId], references: [id])
   placeId         Int?
-  Saves           Save[]
+  saves           Save[]
   created_at      DateTime  @default(now())
   updated_at      DateTime  @updatedAt
   deleted_at      DateTime?

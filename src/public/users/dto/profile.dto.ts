@@ -13,6 +13,10 @@ export class ProfileDto extends Dto<ProfileDto> {
 
   @ApiProperty()
   @IsString()
+  firstname: string;
+
+  @ApiProperty()
+  @IsString()
   @IsOptional()
   avatar?: string;
 }

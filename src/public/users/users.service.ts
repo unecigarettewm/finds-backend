@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { FindDto } from '../finds/dto/Find.dto';
 import { ProfileDto } from './dto/profile.dto';
 import { UserProfileDto } from './dto/userProfile.dto';
+import { PlaceDto } from '../places/dto/place.dto';
 
 @Injectable()
 export class UsersService {
@@ -53,21 +54,7 @@ export class UsersService {
       username: profile.username,
       avatar: profile.avatar,
       followers: 0,
-      finds: profile.finds.map(
-        (e) =>
-          new FindDto({
-            id: e.id,
-            review: e.review,
-            rating: e.rating,
-            googlePlaceId: e.google_place_id,
-            images: e.images,
-            user: new ProfileDto({
-              id: profile.id,
-              username: profile.username,
-              avatar: profile.avatar,
-            }),
-          }),
-      ),
+      finds: [],
     });
   }
 }
