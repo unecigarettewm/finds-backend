@@ -25,7 +25,7 @@ export class FindsService {
         new FindDto({
           id: e.id,
           review: e.review,
-          rating: e.rating,
+          rating: e.rating.toFixed(1),
           place: {
             id: e.place.id,
             name: e.place.name,

@@ -45,7 +45,7 @@ export class PlacesService {
           id: place.id,
           name: place.name,
         },
-        rating: find.rating,
+        rating: find.rating.toFixed(1),
         review: find.review,
         user: {
           firstname: find.user.firstname,

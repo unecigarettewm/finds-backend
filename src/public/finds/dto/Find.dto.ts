@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Decimal } from '@prisma/client/runtime/library';
-import { IsDecimal, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Dto } from 'src/lib/dto/Dto';
 import { PlaceDto } from 'src/public/places/dto/place.dto';
 import { ProfileDto } from 'src/public/users/dto/profile.dto';
@@ -17,9 +16,9 @@ export class FindDto extends Dto<FindDto> {
   review: string;
 
   @ApiProperty()
-  @IsDecimal()
+  @IsString()
   @IsNotEmpty()
-  rating: Decimal;
+  rating: string;
 
   @ApiProperty()
   @IsNotEmpty()
