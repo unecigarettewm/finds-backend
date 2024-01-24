@@ -5,6 +5,13 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 
+export interface ReqUserType {
+  userId: {
+    id: number;
+  };
+  username: string;
+}
+
 export const ReqUser = (required = true) =>
   createParamDecorator((_data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest<Request>();

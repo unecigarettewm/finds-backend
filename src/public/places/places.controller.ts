@@ -1,6 +1,5 @@
-import { Controller, Get, Logger, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Logger, Param } from '@nestjs/common';
 import { PlacesService } from './places.service';
-import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { PlaceWithFindsDto } from './dto/placeWithFinds.dto';
 
