@@ -103,6 +103,16 @@ export class UsersService {
   }
 
   async updateUsername(username: string, userId: number) {
+    if (username.length < 3) {
+      throw new ConflictException('Username must be at least 3 characters');
+    }
+
+    if (!/^[a-zA-Z0-9_.-]*$/.test(username)) {
+      throw new ConflictException(
+        'Username can only contain letters, numbers, underscores, dashes and dots',
+      );
+    }
+
     const usernameTaken = await this.prisma.user.findFirst({
       where: {
         username,
