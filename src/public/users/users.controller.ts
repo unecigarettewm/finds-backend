@@ -1,8 +1,16 @@
-import { Controller, Get, Logger, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { UserProfileDto } from './dto/userProfile.dto';
+import { ReqUser, ReqUserType } from 'src/auth/util/user.decorator';
 
 @ApiTags('users')
 @Controller('user')
@@ -13,9 +21,17 @@ export class UsersController {
     this.logger = new Logger();
   }
 
-  // @UseGuards(JwtGuard)
   @Get('profile/:id')
   async getProfileAndFinds(@Param('id') id: string): Promise<UserProfileDto> {
     return this.usersService.getProfileAndFinds(Number(id));
+  }
+
+  @UseGuards(JwtGuard)
+  @Post('username/:username')
+  async updateUsername(
+    @Param('username') username: string,
+    @ReqUser() user: ReqUserType,
+  ): Promise<string> {
+    return this.usersService.updateUsername(username, user.userId.id);
   }
 }

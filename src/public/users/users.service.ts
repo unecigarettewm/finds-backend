@@ -101,4 +101,27 @@ export class UsersService {
       })),
     });
   }
+
+  async updateUsername(username: string, userId: number) {
+    const usernameTaken = await this.prisma.user.findFirst({
+      where: {
+        username,
+      },
+    });
+
+    if (!!usernameTaken) {
+      throw new ConflictException('Username already taken');
+    }
+
+    const user = await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        username,
+      },
+    });
+
+    return user.username;
+  }
 }
