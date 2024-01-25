@@ -27,10 +27,6 @@ export class SavesService {
       },
     });
 
-    if (!saves) {
-      return [];
-    }
-
     return saves.map(
       (save) =>
         new UserSaveDto({
