@@ -4,6 +4,8 @@ import { User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from 'src/public/users/dto/createUser.dto';
+import { AuthUserDto } from 'src/public/users/dto/authUser.dto';
+import { LoginResDto } from './dto/loginResDto';
 
 @Injectable()
 export class AuthService {
@@ -28,23 +30,21 @@ export class AuthService {
       sub: { id: user.id },
     };
 
-    console.log('Yo');
-
-    const authUser = {
+    const authUser = new AuthUserDto({
       id: user.id,
       firstname: user.firstname,
       username: user.username,
       email: user.email,
       avatar: user.avatar,
-    };
+    });
 
-    return {
-      ...authUser,
+    return new LoginResDto({
+      user: { ...authUser },
       accessToken: this.jwtService.sign(payload),
       refreshToken: this.jwtService.sign(payload, {
         expiresIn: '7d',
       }),
-    };
+    });
   }
 
   async createUser(data: CreateUserDto) {
