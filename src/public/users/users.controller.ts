@@ -11,6 +11,7 @@ import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { UserProfileDto } from './dto/userProfile.dto';
 import { ReqUser, ReqUserType } from 'src/auth/util/user.decorator';
+import { AuthUserDto } from './dto/authUser.dto';
 
 @ApiTags('users')
 @Controller('user')
@@ -31,7 +32,7 @@ export class UsersController {
   async updateUsername(
     @Param('username') username: string,
     @ReqUser() user: ReqUserType,
-  ): Promise<string> {
+  ): Promise<AuthUserDto> {
     return this.usersService.updateUsername(username, user.userId.id);
   }
 }

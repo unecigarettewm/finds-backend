@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma.service';
 import { CreateUserDto } from './dto/createUser.dto';
 import * as bcrypt from 'bcrypt';
 import { UserProfileDto } from './dto/userProfile.dto';
+import { AuthUserDto } from './dto/authUser.dto';
 
 @Injectable()
 export class UsersService {
@@ -107,6 +108,10 @@ export class UsersService {
       throw new ConflictException('Username must be at least 3 characters');
     }
 
+    if (username.length > 15) {
+      throw new ConflictException('Username must be at most 15 characters');
+    }
+
     if (!/^[a-zA-Z0-9_.-]*$/.test(username)) {
       throw new ConflictException(
         'Username can only contain letters, numbers, underscores, dashes and dots',
@@ -132,6 +137,12 @@ export class UsersService {
       },
     });
 
-    return user.username;
+    return new AuthUserDto({
+      email: user.email,
+      firstname: user.firstname,
+      id: user.id,
+      username: user.username,
+      avatar: user.avatar,
+    });
   }
 }
