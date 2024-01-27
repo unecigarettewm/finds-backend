@@ -22,6 +22,11 @@ export class UserProfileDto extends Dto<UserProfileDto> {
   avatar?: string;
 
   @ApiProperty()
+  @IsString()
+  @IsOptional()
+  bio?: string;
+
+  @ApiProperty()
   @IsNumber()
   followers: number;
 

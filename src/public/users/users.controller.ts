@@ -23,7 +23,7 @@ export class UsersController {
   }
 
   @Get('profile/:id')
-  async getProfileAndFinds(@Param('id') id: string): Promise<UserProfileDto> {
+  async getProfileAndFinds(@Param('id') id: number): Promise<UserProfileDto> {
     return this.usersService.getProfileAndFinds(Number(id));
   }
 
