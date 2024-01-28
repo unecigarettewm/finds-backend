@@ -36,6 +36,7 @@ model Find {
   place      Place?    @relation(fields: [placeId], references: [id])
   placeId    Int
   saves      Save[]
+  findTags   FindTag[]
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
@@ -46,7 +47,6 @@ model Place {
   google_place_id String    @unique
   name            String
   address         String
-  categories      String[]
   google_maps_uri String
   created_at      DateTime  @default(now())
   updated_at      DateTime  @updatedAt
@@ -61,6 +61,26 @@ model Save {
   find       Find?     @relation(fields: [findId], references: [id])
   findId     Int?
   created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
+  updated_at DateTime  @default(now()) @updatedAt
+  deleted_at DateTime?
+}
+
+model Tag {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
+  deleted_at DateTime?
+  finds      FindTag[]
+}
+
+model FindTag {
+  id         Int       @id @default(autoincrement())
+  tag        Tag       @relation(fields: [tagId], references: [id])
+  tagId      Int
+  find       Find      @relation(fields: [findId], references: [id])
+  findId     Int
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
 }

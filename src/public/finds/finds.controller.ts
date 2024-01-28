@@ -1,7 +1,7 @@
 import { Controller, Get, Logger } from '@nestjs/common';
 import { FindsService } from './finds.service';
 import { ApiTags } from '@nestjs/swagger';
-import { FindDto } from './dto/Find.dto';
+import { FindDto } from './dto/find.dto';
 
 @ApiTags('finds')
 @Controller('finds')

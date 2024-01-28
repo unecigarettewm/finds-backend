@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber } from 'class-validator';
 import { Dto } from 'src/lib/dto/Dto';
-import { FindDto } from 'src/public/finds/dto/Find.dto';
+import { FindDto } from 'src/public/finds/dto/find.dto';
 
 export class UserSaveDto extends Dto<UserSaveDto> {
   @ApiProperty()

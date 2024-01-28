@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/createUser.dto';
 import * as bcrypt from 'bcrypt';
 import { UserProfileDto } from './dto/userProfile.dto';
 import { AuthUserDto } from './dto/authUser.dto';
+import { TagDto } from '../finds/dto/tag.dto';
 
 @Injectable()
 export class UsersService {
@@ -61,6 +62,11 @@ export class UsersService {
         finds: {
           include: {
             place: true,
+            findTags: {
+              include: {
+                tag: true,
+              },
+            },
           },
           orderBy: {
             created_at: 'desc',
@@ -84,11 +90,17 @@ export class UsersService {
         id: find.id,
         createdAt: find.created_at,
         images: find.images,
+        tags: find.findTags.map(
+          (tag) =>
+            new TagDto({
+              id: tag.tag.id,
+              name: tag.tag.name,
+            }),
+        ),
         place: {
           id: find.place.id,
           name: find.place.name,
           address: find.place.address,
-          categories: find.place.categories,
           googleMapsUri: find.place.google_maps_uri,
           googlePlaceId: find.place.google_place_id,
         },

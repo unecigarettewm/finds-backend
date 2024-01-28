@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { UserSaveDto } from './dto/userSave.dto';
+import { TagDto } from '../finds/dto/tag.dto';
 
 @Injectable()
 export class SavesService {
@@ -22,6 +23,11 @@ export class SavesService {
           include: {
             place: true,
             user: true,
+            findTags: {
+              include: {
+                tag: true,
+              },
+            },
           },
         },
       },
@@ -38,6 +44,13 @@ export class SavesService {
             images: save.find.images,
             rating: save.find.rating.toFixed(1),
             review: save.find.review,
+            tags: save.find.findTags.map(
+              (tag) =>
+                new TagDto({
+                  id: tag.tag.id,
+                  name: tag.tag.name,
+                }),
+            ),
             user: {
               id: save.find.user.id,
               firstname: save.find.user.firstname,
@@ -47,7 +60,6 @@ export class SavesService {
             place: {
               id: save.find.place.id,
               address: save.find.place.address,
-              categories: save.find.place.categories,
               name: save.find.place.name,
               googleMapsUri: save.find.place.google_maps_uri,
               googlePlaceId: save.find.place.google_place_id,

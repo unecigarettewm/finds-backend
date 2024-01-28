@@ -18,10 +18,6 @@ export class PlaceDto extends Dto<PlaceDto> {
   @IsNotEmpty()
   address: string;
 
-  @ApiProperty({ type: [String] })
-  @IsNotEmpty()
-  categories: string[];
-
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
