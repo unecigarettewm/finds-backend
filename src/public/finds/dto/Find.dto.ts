@@ -4,6 +4,7 @@ import { Dto } from 'src/lib/dto/Dto';
 import { PlaceDto } from 'src/public/places/dto/place.dto';
 import { ProfileDto } from 'src/public/users/dto/profile.dto';
 import { TagDto } from './tag.dto';
+import { RatingDto } from './rating.dto';
 
 export class FindDto extends Dto<FindDto> {
   @ApiProperty()
@@ -16,10 +17,9 @@ export class FindDto extends Dto<FindDto> {
   @IsNotEmpty()
   review: string;
 
-  @ApiProperty()
-  @IsString()
+  @ApiProperty({ type: RatingDto })
   @IsNotEmpty()
-  rating: string;
+  rating: RatingDto;
 
   @ApiProperty()
   @IsNotEmpty()

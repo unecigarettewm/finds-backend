@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { UserProfileDto } from './dto/userProfile.dto';
 import { AuthUserDto } from './dto/authUser.dto';
 import { TagDto } from '../finds/dto/tag.dto';
+import { RatingDto } from '../finds/dto/rating.dto';
 
 @Injectable()
 export class UsersService {
@@ -62,6 +63,7 @@ export class UsersService {
         finds: {
           include: {
             place: true,
+            rating: true,
             findTags: {
               include: {
                 tag: true,
@@ -104,7 +106,10 @@ export class UsersService {
           googleMapsUri: find.place.google_maps_uri,
           googlePlaceId: find.place.google_place_id,
         },
-        rating: find.rating.toFixed(1),
+        rating: new RatingDto({
+          id: find.rating.id,
+          name: find.rating.rating,
+        }),
         review: find.review,
         user: {
           firstname: profile.firstname,

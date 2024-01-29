@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { FindDto } from './dto/find.dto';
 import { TagDto } from './dto/tag.dto';
+import { RatingDto } from './dto/rating.dto';
 
 @Injectable()
 export class FindsService {
@@ -14,6 +15,7 @@ export class FindsService {
       },
       include: {
         user: true,
+        rating: true,
         place: true,
         findTags: {
           include: {
@@ -31,7 +33,10 @@ export class FindsService {
         new FindDto({
           id: e.id,
           review: e.review,
-          rating: e.rating.toFixed(1),
+          rating: new RatingDto({
+            id: e.rating.id,
+            name: e.rating.rating,
+          }),
           place: {
             id: e.place.id,
             name: e.place.name,

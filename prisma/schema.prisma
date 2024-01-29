@@ -28,7 +28,8 @@ model User {
 model Find {
   id         Int       @id @default(autoincrement())
   review     String
-  rating     Decimal
+  rating     Rating    @relation(fields: [ratingId], references: [id])
+  ratingId   Int
   published  Boolean?  @default(false)
   user       User?     @relation(fields: [userId], references: [id])
   userId     Int
@@ -83,4 +84,13 @@ model FindTag {
   created_at DateTime  @default(now())
   updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
+}
+
+model Rating {
+  id         Int       @id @default(autoincrement())
+  rating     String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
+  deleted_at DateTime?
+  finds      Find[]
 }
