@@ -12,7 +12,6 @@ export class PlacesController {
     this.logger = new Logger();
   }
 
-  // @UseGuards(JwtGuard)
   @Get(':id')
   async getPlaceByGoogleId(
     @Param('id') id: string,
