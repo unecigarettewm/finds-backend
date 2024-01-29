@@ -1,9 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { GooglePlaceDto } from './dto/googlePlace.dto';
-import { GooglePlaceSearchResponseDto } from './dto/googlePlaceSearchResponse.dto';
+import { PrismaService } from 'src/prisma.service';
+import { ProfileDto } from '../users/dto/profile.dto';
+import { PlacesAndProfilesDto } from './dto/placesAndProfiles.dto';
 
 @Injectable()
 export class SearchService {
+  constructor(private prisma: PrismaService) {}
+
+  async searchProfiles(query: string) {
+    const profiles = await this.prisma.user.findMany({
+      where: {
+        OR: [
+          { username: { contains: query } },
+          { firstname: { contains: query } },
+        ],
+      },
+    });
+
+    return profiles.map(
+      (profile) =>
+        new ProfileDto({
+          id: profile.id,
+          firstname: profile.firstname,
+          username: profile.username,
+          avatar: profile.avatar,
+        }),
+    );
+  }
+
   async searchGooglePlaces(query: string) {
     const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 
@@ -54,11 +79,28 @@ export class SearchService {
         return place.types.some((type) => acceptableTypes.includes(type));
       });
 
-      return new GooglePlaceSearchResponseDto({
-        places: filteredData,
-      });
+      return filteredData.map(
+        (place) =>
+          new GooglePlaceDto({
+            id: place.id,
+            displayName: place.displayName,
+            googleMapsUri: place.googleMapsUri,
+            shortFormattedAddress: place.shortFormattedAddress,
+            types: place.types,
+          }),
+      );
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  async searchPlacesAndProfiles(query: string) {
+    const places = await this.searchGooglePlaces(query);
+    const profiles = await this.searchProfiles(query);
+
+    return new PlacesAndProfilesDto({
+      places,
+      profiles,
+    });
   }
 }
