@@ -20,6 +20,9 @@ export class SearchService {
             username: {
               not: null,
             },
+            deleted_at: {
+              equals: null,
+            },
           },
         ],
       },
