@@ -77,7 +77,7 @@ export class SearchService {
                 },
               },
             },
-            maxResultCount: 7,
+            maxResultCount: 15,
           }),
         },
       );
