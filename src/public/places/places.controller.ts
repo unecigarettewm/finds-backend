@@ -16,6 +16,6 @@ export class PlacesController {
   async getPlaceByGoogleId(
     @Param('id') id: string,
   ): Promise<PlaceWithFindsDto> {
-    return this.placesService.getPlaceByGoogleId(id);
+    return this.placesService.getPlaceWithFinds(id);
   }
 }

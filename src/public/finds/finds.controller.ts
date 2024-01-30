@@ -1,7 +1,18 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { FindsService } from './finds.service';
 import { ApiTags } from '@nestjs/swagger';
 import { FindDto } from './dto/find.dto';
+import { ReqUser, ReqUserType } from 'src/auth/util/user.decorator';
+import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
+import { CreateFindDto } from './dto/createFind.dto';
 
 @ApiTags('finds')
 @Controller('finds')
@@ -15,5 +26,14 @@ export class FindsController {
   @Get('all')
   async allFinds(): Promise<FindDto[]> {
     return this.findsService.getAllFinds();
+  }
+
+  @UseGuards(JwtGuard)
+  @Post('create')
+  async createFind(
+    @ReqUser() user: ReqUserType,
+    @Body() createFindDto: CreateFindDto,
+  ): Promise<FindDto> {
+    return this.findsService.createFind(user.userId.id, createFindDto);
   }
 }

@@ -3,12 +3,38 @@ import { PrismaService } from 'src/prisma.service';
 import { PlaceWithFindsDto } from './dto/placeWithFinds.dto';
 import { TagDto } from '../finds/dto/tag.dto';
 import { RatingDto } from '../finds/dto/rating.dto';
+import { GooglePlaceDto } from '../search/dto/googlePlace.dto';
 
 @Injectable()
 export class PlacesService {
   constructor(private prisma: PrismaService) {}
 
+  async createPlace(place: GooglePlaceDto) {
+    return await this.prisma.place.create({
+      data: {
+        name: place.displayName.text,
+        google_place_id: place.id,
+        address: place.shortFormattedAddress,
+        google_maps_uri: place.googleMapsUri,
+      },
+    });
+  }
+
   async getPlaceByGoogleId(id: string) {
+    const place = await this.prisma.place.findFirst({
+      where: {
+        google_place_id: id,
+      },
+    });
+
+    if (!place) {
+      return null;
+    }
+
+    return place;
+  }
+
+  async getPlaceWithFinds(id: string) {
     const place = await this.prisma.place.findFirst({
       where: {
         google_place_id: id,

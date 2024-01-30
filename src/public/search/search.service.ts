@@ -8,6 +8,36 @@ import { PlacesAndProfilesDto } from './dto/placesAndProfiles.dto';
 export class SearchService {
   constructor(private prisma: PrismaService) {}
 
+  async getGooglePlaceById(id: string) {
+    const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
+
+    if (!GOOGLE_API_KEY) {
+      throw new Error('Missing Google API Key');
+    }
+
+    try {
+      const response = await fetch(
+        `https://places.googleapis.com/v1/places/${id}?fields=id,displayName,shortFormattedAddress,types,googleMapsUri&languageCode=en&key=${GOOGLE_API_KEY}`,
+        {
+          method: 'GET',
+        },
+      );
+
+      const responseJson = (await response.json()) as GooglePlaceDto;
+
+      return new GooglePlaceDto({
+        id: responseJson.id,
+        displayName: responseJson.displayName,
+        googleMapsUri: responseJson.googleMapsUri,
+        shortFormattedAddress: responseJson.shortFormattedAddress,
+        types: responseJson.types,
+      });
+      // const responseTyped = responseJson.places as GooglePlaceDto;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async searchProfiles(query: string) {
     const profiles = await this.prisma.user.findMany({
       where: {
