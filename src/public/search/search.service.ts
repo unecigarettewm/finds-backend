@@ -15,6 +15,13 @@ export class SearchService {
           { username: { contains: query } },
           { firstname: { contains: query } },
         ],
+        AND: [
+          {
+            username: {
+              not: null,
+            },
+          },
+        ],
       },
     });
 
