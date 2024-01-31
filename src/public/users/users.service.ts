@@ -9,6 +9,26 @@ import { AuthUserDto } from './dto/authUser.dto';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
+  async getUser(userId: number) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    return new AuthUserDto({
+      email: user.email,
+      firstname: user.firstname,
+      id: user.id,
+      username: user.username,
+      avatar: user.avatar,
+    });
+  }
+
   async findOneWithEmail(username: string) {
     return await this.prisma.user.findFirst({
       where: {

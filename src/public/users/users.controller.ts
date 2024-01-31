@@ -35,4 +35,10 @@ export class UsersController {
   ): Promise<AuthUserDto> {
     return this.usersService.updateUsername(username, user.userId.id);
   }
+
+  @UseGuards(JwtGuard)
+  @Get('user')
+  async getUser(@ReqUser() user: ReqUserType): Promise<AuthUserDto> {
+    return this.usersService.getUser(user.userId.id);
+  }
 }
