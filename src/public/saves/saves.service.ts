@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { UserSaveDto } from './dto/userSave.dto';
 import { CategoryDto } from '../finds/dto/category.dto';
+import { ActiveSaveDto } from './dto/activeSave.dto';
 
 @Injectable()
 export class SavesService {
@@ -60,5 +61,123 @@ export class SavesService {
           },
         }),
     );
+  }
+
+  async getFindUserSave(findId: number, userId: number) {
+    const save = await this.prisma.save.findFirst({
+      where: {
+        find: {
+          id: findId,
+        },
+        user: {
+          id: userId,
+        },
+        deleted_at: null,
+      },
+      include: {
+        user: true,
+        find: true,
+      },
+    });
+
+    if (!save) {
+      return null;
+    }
+
+    return new ActiveSaveDto({
+      id: save.id,
+      userId: save.user.id,
+      findId: save.find.id,
+      deleted_at: save.deleted_at,
+    });
+  }
+
+  async addSave(findId: number, userId: number) {
+    if (!findId) {
+      throw new BadRequestException('Invalid findId');
+    }
+
+    if (!userId) {
+      throw new BadRequestException('Invalid userId');
+    }
+
+    const existingSave = await this.prisma.save.findFirst({
+      where: {
+        findId,
+        userId,
+      },
+    });
+
+    if (existingSave) {
+      // Save already exists, update deletedAt to null
+      const save = await this.prisma.save.update({
+        where: {
+          id: existingSave.id,
+        },
+        data: {
+          deleted_at: null,
+        },
+      });
+
+      return new ActiveSaveDto({
+        id: save.id,
+        userId: save.userId,
+        findId: save.findId,
+        deleted_at: save.deleted_at,
+      });
+    } else {
+      // Save doesn't exist, add a new record
+      const save = await this.prisma.save.create({
+        data: {
+          userId,
+          findId,
+        },
+      });
+
+      return new ActiveSaveDto({
+        id: save.id,
+        userId: save.userId,
+        findId: save.findId,
+        deleted_at: save.deleted_at,
+      });
+    }
+  }
+
+  async deleteSave(findId: number, userId: number) {
+    if (!findId) {
+      throw new BadRequestException('Invalid findId');
+    }
+
+    const existingSave = await this.prisma.save.findFirst({
+      where: {
+        findId,
+        user: {
+          id: userId,
+        },
+      },
+    });
+
+    if (!existingSave) {
+      throw new BadRequestException('Save not found');
+    }
+
+    const save = await this.prisma.save.update({
+      where: {
+        id: existingSave.id,
+        user: {
+          id: userId,
+        },
+      },
+      data: {
+        deleted_at: new Date(),
+      },
+    });
+
+    return new ActiveSaveDto({
+      id: save.id,
+      userId: save.userId,
+      findId: save.findId,
+      deleted_at: save.deleted_at,
+    });
   }
 }

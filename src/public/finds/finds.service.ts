@@ -67,8 +67,28 @@ export class FindsService {
   async createFind(userId: number, createFindDto: CreateFindDto) {
     const { googlePlaceId, review, categoryId, images, tags } = createFindDto;
 
-    if (!googlePlaceId || !review || !categoryId || !images || !tags) {
-      throw new PreconditionFailedException('Missing required fields');
+    if (!googlePlaceId) {
+      throw new PreconditionFailedException('Missing google place id');
+    }
+
+    if (!review) {
+      throw new PreconditionFailedException('Missing review');
+    }
+
+    if (!categoryId) {
+      throw new PreconditionFailedException('Missing category id');
+    }
+
+    if (!images) {
+      throw new PreconditionFailedException('Missing images');
+    }
+
+    if (!tags) {
+      throw new PreconditionFailedException('Missing tags');
+    }
+
+    if (!userId) {
+      throw new PreconditionFailedException('Missing user id');
     }
 
     const existingPlaceInDB =
