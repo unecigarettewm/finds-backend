@@ -5,8 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { FindDto } from './dto/find.dto';
-import { TagDto } from './dto/tag.dto';
-import { RatingDto } from './dto/rating.dto';
+import { CategoryDto } from './dto/category.dto';
 import { SearchService } from '../search/search.service';
 import { PlacesService } from '../places/places.service';
 import { PlaceDto } from '../places/dto/place.dto';
@@ -28,13 +27,8 @@ export class FindsService {
       },
       include: {
         user: true,
-        rating: true,
+        category: true,
         place: true,
-        findTags: {
-          include: {
-            tag: true,
-          },
-        },
       },
       orderBy: {
         created_at: 'desc',
@@ -46,10 +40,11 @@ export class FindsService {
         new FindDto({
           id: e.id,
           review: e.review,
-          rating: new RatingDto({
-            id: e.rating.id,
-            name: e.rating.rating,
+          category: new CategoryDto({
+            id: e.category.id,
+            name: e.category.name,
           }),
+          tags: e.tags,
           place: {
             id: e.place.id,
             name: e.place.name,
@@ -57,13 +52,6 @@ export class FindsService {
             googleMapsUri: e.place.google_maps_uri,
             googlePlaceId: e.place.google_place_id,
           },
-          tags: e.findTags.map(
-            (tag) =>
-              new TagDto({
-                id: tag.tag.id,
-                name: tag.tag.name,
-              }),
-          ),
           images: e.images,
           user: {
             firstname: e.user.firstname,
@@ -77,9 +65,9 @@ export class FindsService {
   }
 
   async createFind(userId: number, createFindDto: CreateFindDto) {
-    const { googlePlaceId, review, ratingId, images, tags } = createFindDto;
+    const { googlePlaceId, review, categoryId, images, tags } = createFindDto;
 
-    if (!googlePlaceId || !review || !ratingId || !images || !tags) {
+    if (!googlePlaceId || !review || !categoryId || !images || !tags) {
       throw new PreconditionFailedException('Missing required fields');
     }
 
@@ -105,9 +93,9 @@ export class FindsService {
     const newFind = await this.prisma.find.create({
       data: {
         review,
-        rating: {
+        category: {
           connect: {
-            id: ratingId,
+            id: categoryId,
           },
         },
         place: {
@@ -121,24 +109,11 @@ export class FindsService {
             id: userId,
           },
         },
-        findTags: {
-          create: tags.map((tag) => ({
-            tag: {
-              connect: {
-                id: tag.id,
-              },
-            },
-          })),
-        },
+        tags,
       },
       include: {
-        findTags: {
-          include: {
-            tag: true,
-          },
-        },
         place: true,
-        rating: true,
+        category: true,
         user: true,
       },
     });
@@ -152,9 +127,9 @@ export class FindsService {
       images: newFind.images,
       review: newFind.review,
       createdAt: newFind.created_at,
-      rating: new RatingDto({
-        id: newFind.rating.id,
-        name: newFind.rating.rating,
+      category: new CategoryDto({
+        id: newFind.category.id,
+        name: newFind.category.name,
       }),
       place: new PlaceDto({
         id: newFind.place.id,
@@ -163,13 +138,7 @@ export class FindsService {
         googlePlaceId: newFind.place.google_place_id,
         name: newFind.place.name,
       }),
-      tags: newFind.findTags.map(
-        (tag) =>
-          new TagDto({
-            id: tag.tag.id,
-            name: tag.tag.name,
-          }),
-      ),
+      tags: newFind.tags,
       user: new ProfileDto({
         id: newFind.user.id,
         firstname: newFind.user.firstname,
@@ -177,5 +146,24 @@ export class FindsService {
         avatar: newFind.user.avatar,
       }),
     });
+  }
+
+  async getAllCategories() {
+    const categories = await this.prisma.category.findMany({
+      where: {
+        deleted_at: null,
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+
+    return categories.map(
+      (e) =>
+        new CategoryDto({
+          id: e.id,
+          name: e.name,
+        }),
+    );
   }
 }

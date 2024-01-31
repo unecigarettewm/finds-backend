@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { PlaceWithFindsDto } from './dto/placeWithFinds.dto';
-import { TagDto } from '../finds/dto/tag.dto';
-import { RatingDto } from '../finds/dto/rating.dto';
 import { GooglePlaceDto } from '../search/dto/googlePlace.dto';
+import { CategoryDto } from '../finds/dto/category.dto';
 
 @Injectable()
 export class PlacesService {
@@ -43,12 +42,7 @@ export class PlacesService {
         finds: {
           include: {
             user: true,
-            rating: true,
-            findTags: {
-              include: {
-                tag: true,
-              },
-            },
+            category: true,
           },
           orderBy: {
             created_at: 'desc',
@@ -77,16 +71,10 @@ export class PlacesService {
           id: place.id,
           name: place.name,
         },
-        tags: find.findTags.map(
-          (tag) =>
-            new TagDto({
-              id: tag.tag.id,
-              name: tag.tag.name,
-            }),
-        ),
-        rating: new RatingDto({
-          id: find.rating.id,
-          name: find.rating.rating,
+        tags: find.tags,
+        category: new CategoryDto({
+          id: find.category.id,
+          name: find.category.name,
         }),
         review: find.review,
         user: {

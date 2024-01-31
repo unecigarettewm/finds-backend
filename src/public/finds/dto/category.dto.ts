@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Dto } from 'src/lib/dto/Dto';
 
-export class RatingDto extends Dto<RatingDto> {
+export class CategoryDto extends Dto<CategoryDto> {
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()

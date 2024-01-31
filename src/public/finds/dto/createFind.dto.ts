@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Dto } from 'src/lib/dto/Dto';
-import { TagDto } from './tag.dto';
 
 export class CreateFindDto extends Dto<CreateFindDto> {
   @ApiProperty()
@@ -17,13 +16,13 @@ export class CreateFindDto extends Dto<CreateFindDto> {
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  ratingId: number;
+  categoryId: number;
 
   @ApiProperty({ type: [String] })
   @IsNotEmpty()
   images: string[];
 
-  @ApiProperty({ type: [TagDto] })
+  @ApiProperty({ type: [String] })
   @IsNotEmpty()
-  tags: TagDto[];
+  tags: string[];
 }

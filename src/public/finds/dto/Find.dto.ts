@@ -3,8 +3,7 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Dto } from 'src/lib/dto/Dto';
 import { PlaceDto } from 'src/public/places/dto/place.dto';
 import { ProfileDto } from 'src/public/users/dto/profile.dto';
-import { TagDto } from './tag.dto';
-import { RatingDto } from './rating.dto';
+import { CategoryDto } from './category.dto';
 
 export class FindDto extends Dto<FindDto> {
   @ApiProperty()
@@ -17,9 +16,9 @@ export class FindDto extends Dto<FindDto> {
   @IsNotEmpty()
   review: string;
 
-  @ApiProperty({ type: RatingDto })
+  @ApiProperty({ type: CategoryDto })
   @IsNotEmpty()
-  rating: RatingDto;
+  category: CategoryDto;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -29,9 +28,9 @@ export class FindDto extends Dto<FindDto> {
   @IsNotEmpty()
   images: string[];
 
-  @ApiProperty({ type: [TagDto] })
+  @ApiProperty({ type: [String] })
   @IsNotEmpty()
-  tags: TagDto[];
+  tags: string[];
 
   @ApiProperty()
   @IsNotEmpty()
