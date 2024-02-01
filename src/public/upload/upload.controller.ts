@@ -28,7 +28,6 @@ export class UploadController {
     )
     files: Express.Multer.File[],
   ) {
-    const res = await this.uploadService.upload(files, user.userId.id);
-    console.log(res);
+    return await this.uploadService.upload(files, user.userId.id);
   }
 }
