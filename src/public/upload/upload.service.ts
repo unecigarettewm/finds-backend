@@ -1,5 +1,5 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as sharp from 'sharp';
 
@@ -31,7 +31,10 @@ export class UploadService {
 
     for (const file of files) {
       if (!file.mimetype.startsWith('image')) {
-        throw new Error(`File ${file.originalname} is not an image`);
+        throw new HttpException(
+          "You're trying to upload a non-image file",
+          HttpStatus.PRECONDITION_FAILED,
+        );
       }
 
       let readyImage = file.buffer;
