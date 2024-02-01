@@ -17,7 +17,7 @@ export class SavesService {
         deleted_at: null,
       },
       orderBy: {
-        created_at: 'desc',
+        created_at: 'asc',
       },
       include: {
         find: {
@@ -93,14 +93,6 @@ export class SavesService {
   }
 
   async addSave(findId: number, userId: number) {
-    if (!findId) {
-      throw new BadRequestException('Invalid findId');
-    }
-
-    if (!userId) {
-      throw new BadRequestException('Invalid userId');
-    }
-
     const existingSave = await this.prisma.save.findFirst({
       where: {
         findId,
