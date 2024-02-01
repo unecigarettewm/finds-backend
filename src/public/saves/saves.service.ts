@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { UserSaveDto } from './dto/userSave.dto';
 import { CategoryDto } from '../finds/dto/category.dto';
@@ -72,7 +72,6 @@ export class SavesService {
         user: {
           id: userId,
         },
-        deleted_at: null,
       },
       include: {
         user: true,
@@ -92,7 +91,7 @@ export class SavesService {
     });
   }
 
-  async addSave(findId: number, userId: number) {
+  async updateSave(findId: number, userId: number) {
     const existingSave = await this.prisma.save.findFirst({
       where: {
         findId,
@@ -107,7 +106,7 @@ export class SavesService {
           id: existingSave.id,
         },
         data: {
-          deleted_at: null,
+          deleted_at: existingSave.deleted_at === null ? new Date() : null,
         },
       });
 
@@ -115,7 +114,7 @@ export class SavesService {
         id: save.id,
         userId: save.userId,
         findId: save.findId,
-        deleted_at: save.deleted_at,
+        deleted_at: existingSave.deleted_at === null ? new Date() : null,
       });
     } else {
       // Save doesn't exist, add a new record
@@ -133,43 +132,5 @@ export class SavesService {
         deleted_at: save.deleted_at,
       });
     }
-  }
-
-  async deleteSave(findId: number, userId: number) {
-    if (!findId) {
-      throw new BadRequestException('Invalid findId');
-    }
-
-    const existingSave = await this.prisma.save.findFirst({
-      where: {
-        findId,
-        user: {
-          id: userId,
-        },
-      },
-    });
-
-    if (!existingSave) {
-      throw new BadRequestException('Save not found');
-    }
-
-    const save = await this.prisma.save.update({
-      where: {
-        id: existingSave.id,
-        user: {
-          id: userId,
-        },
-      },
-      data: {
-        deleted_at: new Date(),
-      },
-    });
-
-    return new ActiveSaveDto({
-      id: save.id,
-      userId: save.userId,
-      findId: save.findId,
-      deleted_at: save.deleted_at,
-    });
   }
 }

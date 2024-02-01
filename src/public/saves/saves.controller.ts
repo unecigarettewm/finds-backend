@@ -31,20 +31,11 @@ export class SavesController {
   }
 
   @UseGuards(JwtGuard)
-  @Post('add-save')
-  async addSave(
+  @Post('update-save')
+  async updateSave(
     @ReqUser() user: ReqUserType,
     @Body() { id }: { id: number },
   ): Promise<ActiveSaveDto> {
-    return this.savesService.addSave(id, user.userId.id);
-  }
-
-  @UseGuards(JwtGuard)
-  @Post('delete-save')
-  async deleteSave(
-    @ReqUser() user: ReqUserType,
-    @Body() { id }: { id: number },
-  ): Promise<ActiveSaveDto> {
-    return this.savesService.deleteSave(id, user.userId.id);
+    return this.savesService.updateSave(id, user.userId.id);
   }
 }
