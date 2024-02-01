@@ -3,13 +3,17 @@ import { GooglePlaceDto } from './dto/googlePlace.dto';
 import { PrismaService } from 'src/prisma.service';
 import { ProfileDto } from '../users/dto/profile.dto';
 import { PlacesAndProfilesDto } from './dto/placesAndProfiles.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class SearchService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private configService: ConfigService,
+  ) {}
 
   async getGooglePlaceById(id: string) {
-    const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
+    const GOOGLE_API_KEY = this.configService.getOrThrow('GOOGLE_API_KEY');
 
     if (!GOOGLE_API_KEY) {
       throw new Error('Missing Google API Key');
@@ -70,7 +74,7 @@ export class SearchService {
   }
 
   async searchGooglePlaces(query: string) {
-    const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
+    const GOOGLE_API_KEY = this.configService.getOrThrow('GOOGLE_API_KEY');
 
     if (!GOOGLE_API_KEY) {
       throw new Error('Missing Google API Key');
