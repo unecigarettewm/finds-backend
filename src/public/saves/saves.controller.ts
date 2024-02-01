@@ -5,6 +5,7 @@ import { ReqUser, ReqUserType } from 'src/auth/util/user.decorator';
 import { UserSaveDto } from './dto/userSave.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ActiveSaveDto } from './dto/activeSave.dto';
+import { SkipThrottle } from '@nestjs/throttler';
 
 @ApiTags('saves')
 @Controller('saves')
@@ -22,6 +23,7 @@ export class SavesController {
   }
 
   @UseGuards(JwtGuard)
+  @SkipThrottle()
   @Post('find-user-save')
   async getFindUserSave(
     @ReqUser() user: ReqUserType,

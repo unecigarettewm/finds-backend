@@ -73,10 +73,6 @@ export class SavesService {
           id: userId,
         },
       },
-      include: {
-        user: true,
-        find: true,
-      },
     });
 
     if (!save) {
@@ -85,8 +81,8 @@ export class SavesService {
 
     return new ActiveSaveDto({
       id: save.id,
-      userId: save.user.id,
-      findId: save.find.id,
+      userId: save.userId,
+      findId: save.findId,
       deleted_at: save.deleted_at,
     });
   }
