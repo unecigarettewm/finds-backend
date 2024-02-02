@@ -11,7 +11,9 @@ import { UploadService } from './upload.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ReqUser, ReqUserType } from 'src/auth/util/user.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('upload')
 @Controller('upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
