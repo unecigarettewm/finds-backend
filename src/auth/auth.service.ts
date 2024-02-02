@@ -42,7 +42,7 @@ export class AuthService {
       user: { ...authUser },
       accessToken: this.jwtService.sign(payload),
       refreshToken: this.jwtService.sign(payload, {
-        expiresIn: '7d',
+        expiresIn: '30d',
       }),
     });
   }

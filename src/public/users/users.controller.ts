@@ -12,6 +12,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { UserProfileDto } from './dto/userProfile.dto';
 import { ReqUser, ReqUserType } from 'src/auth/util/user.decorator';
 import { AuthUserDto } from './dto/authUser.dto';
+import { FollowDto } from './dto/follow.dto';
 
 @ApiTags('users')
 @Controller('user')
@@ -40,5 +41,14 @@ export class UsersController {
   @Get('user')
   async getUser(@ReqUser() user: ReqUserType): Promise<AuthUserDto> {
     return this.usersService.getUser(user.userId.id);
+  }
+
+  @UseGuards(JwtGuard)
+  @Post('follow/:id')
+  async followUser(
+    @Param('id') id: number,
+    @ReqUser() user: ReqUserType,
+  ): Promise<FollowDto> {
+    return this.usersService.followUser(id, user.userId.id);
   }
 }

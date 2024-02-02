@@ -30,6 +30,10 @@ export class UserProfileDto extends Dto<UserProfileDto> {
   @IsNumber()
   followers: number;
 
+  @ApiProperty()
+  @IsNumber()
+  following: number;
+
   @ApiProperty({ type: [FindDto] })
   finds: FindDto[];
 }

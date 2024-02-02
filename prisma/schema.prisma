@@ -15,7 +15,7 @@ model User {
   email      String    @unique
   firstname  String
   username   String?   @unique
-  password   String // saved as one way hash
+  password   String // saved as a one-way hash
   finds      Find[]
   avatar     String?
   created_at DateTime  @default(now())
@@ -23,6 +23,9 @@ model User {
   deleted_at DateTime?
   saves      Save[]
   bio        String?
+
+  followers Follower[] @relation("followers")
+  following Follower[] @relation("following")
 }
 
 model Find {
@@ -73,4 +76,15 @@ model Category {
   updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
   finds      Find[]
+}
+
+model Follower {
+  id          Int       @id @default(autoincrement())
+  follower    User      @relation("followers", fields: [followerId], references: [id])
+  followerId  Int
+  following   User      @relation("following", fields: [followingId], references: [id])
+  followingId Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
 }

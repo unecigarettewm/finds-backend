@@ -1,13 +1,103 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserDto } from './dto/createUser.dto';
 import * as bcrypt from 'bcrypt';
 import { UserProfileDto } from './dto/userProfile.dto';
 import { AuthUserDto } from './dto/authUser.dto';
+import { FollowDto } from './dto/follow.dto';
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) {}
+
+  async followUser(userId: number, followerId: number) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const follower = await this.prisma.user.findFirst({
+      where: {
+        id: followerId,
+      },
+    });
+
+    if (!follower) {
+      throw new NotFoundException('Follower not found');
+    }
+
+    const existingRecord = await this.prisma.follower.findFirst({
+      where: {
+        followerId: followerId,
+        followingId: userId,
+      },
+    });
+
+    if (existingRecord) {
+      if (existingRecord.deleted_at) {
+        const res = await this.prisma.follower.update({
+          where: {
+            id: existingRecord.id,
+          },
+          data: {
+            deleted_at: null,
+          },
+        });
+
+        return new FollowDto({
+          id: res.id,
+          followerId: res.followerId,
+          followingId: res.followingId,
+          created_at: res.created_at,
+          deleted_at: res.deleted_at,
+          updated_at: res.updated_at,
+        });
+      } else {
+        const res = await this.prisma.follower.update({
+          where: {
+            id: existingRecord.id,
+          },
+          data: {
+            deleted_at: new Date(),
+          },
+        });
+
+        return new FollowDto({
+          id: res.id,
+          followerId: res.followerId,
+          followingId: res.followingId,
+          created_at: res.created_at,
+          deleted_at: res.deleted_at,
+          updated_at: res.updated_at,
+        });
+      }
+    } else {
+      const res = await this.prisma.follower.create({
+        data: {
+          followingId: userId,
+          followerId: followerId,
+        },
+      });
+
+      return new FollowDto({
+        id: res.id,
+        followerId: res.followerId,
+        followingId: res.followingId,
+        created_at: res.created_at,
+        deleted_at: res.deleted_at,
+        updated_at: res.updated_at,
+      });
+    }
+  }
 
   async getUser(userId: number) {
     const user = await this.prisma.user.findFirst({
@@ -78,6 +168,8 @@ export class UsersService {
         id: userId,
       },
       include: {
+        followers: true,
+        following: true,
         finds: {
           include: {
             place: true,
@@ -99,7 +191,8 @@ export class UsersService {
       username: profile.username,
       avatar: profile.avatar,
       firstname: profile.firstname,
-      followers: 1623487,
+      followers: profile.followers.length,
+      following: profile.following.length,
       bio: profile.bio,
       finds: profile.finds.map((find) => ({
         id: find.id,
