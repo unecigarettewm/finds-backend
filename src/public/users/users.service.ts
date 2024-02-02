@@ -14,10 +14,29 @@ import { FollowDto } from './dto/follow.dto';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
+  async getFollowStatus(userId: number, followerId: number) {
+    const existingRecord = await this.prisma.follower.findFirst({
+      where: {
+        followerId: followerId,
+        followingId: Number(userId),
+      },
+    });
+
+    if (existingRecord) {
+      if (existingRecord.deleted_at) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+
   async followUser(userId: number, followerId: number) {
     const user = await this.prisma.user.findFirst({
       where: {
-        id: userId,
+        id: Number(userId),
       },
     });
 
@@ -38,7 +57,7 @@ export class UsersService {
     const existingRecord = await this.prisma.follower.findFirst({
       where: {
         followerId: followerId,
-        followingId: userId,
+        followingId: Number(userId),
       },
     });
 
@@ -83,7 +102,7 @@ export class UsersService {
     } else {
       const res = await this.prisma.follower.create({
         data: {
-          followingId: userId,
+          followingId: Number(userId),
           followerId: followerId,
         },
       });

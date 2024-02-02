@@ -24,8 +24,8 @@ model User {
   saves      Save[]
   bio        String?
 
-  followers Follower[] @relation("followers")
-  following Follower[] @relation("following")
+  following Follower[] @relation("followers")
+  followers Follower[] @relation("following")
 }
 
 model Find {

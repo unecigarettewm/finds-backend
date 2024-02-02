@@ -51,4 +51,13 @@ export class UsersController {
   ): Promise<FollowDto> {
     return this.usersService.followUser(id, user.userId.id);
   }
+
+  @UseGuards(JwtGuard)
+  @Post('follow-status/:id')
+  async getFollowStatus(
+    @Param('id') id: number,
+    @ReqUser() user: ReqUserType,
+  ): Promise<boolean> {
+    return this.usersService.getFollowStatus(id, user.userId.id);
+  }
 }
