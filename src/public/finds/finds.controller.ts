@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { FindsService } from './finds.service';
 import { ApiTags } from '@nestjs/swagger';
 import { FindDto } from './dto/find.dto';
@@ -21,6 +29,11 @@ export class FindsController {
     return this.findsService.getAllFinds();
   }
 
+  @Get(':id')
+  async getFindById(@Param('id') id: string): Promise<FindDto> {
+    return this.findsService.getFindById(Number(id));
+  }
+
   @UseGuards(JwtGuard)
   @Post('create')
   async createFind(
@@ -30,7 +43,7 @@ export class FindsController {
     return this.findsService.createFind(user.userId.id, createFindDto);
   }
 
-  @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   @Get('categories')
   async getAllCategories(): Promise<CategoryDto[]> {
     return this.findsService.getAllCategories();

@@ -20,6 +20,48 @@ export class FindsService {
     private placesService: PlacesService,
   ) {}
 
+  async getFindById(findId: number) {
+    const find = await this.prisma.find.findUnique({
+      where: {
+        id: findId,
+      },
+      include: {
+        user: true,
+        category: true,
+        place: true,
+      },
+    });
+
+    if (!find) {
+      throw new NotFoundException('Find not found');
+    }
+
+    return new FindDto({
+      id: find.id,
+      review: find.review,
+      category: new CategoryDto({
+        id: find.category.id,
+        name: find.category.name,
+      }),
+      tags: find.tags,
+      place: {
+        id: find.place.id,
+        name: find.place.name,
+        address: find.place.address,
+        googleMapsUri: find.place.google_maps_uri,
+        googlePlaceId: find.place.google_place_id,
+      },
+      images: find.images,
+      user: {
+        firstname: find.user.firstname,
+        id: find.user.id,
+        username: find.user.username,
+        avatar: find.user.avatar,
+      },
+      createdAt: find.created_at,
+    });
+  }
+
   async getAllFinds() {
     const finds = await this.prisma.find.findMany({
       where: {
