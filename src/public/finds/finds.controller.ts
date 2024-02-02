@@ -30,8 +30,8 @@ export class FindsController {
   }
 
   @Get(':id')
-  async getFindById(@Param('id') id: string): Promise<FindDto> {
-    return this.findsService.getFindById(Number(id));
+  async getFindById(@Param('id') findId: string): Promise<FindDto> {
+    return this.findsService.getFindById(Number(findId));
   }
 
   @UseGuards(JwtGuard)
@@ -44,7 +44,7 @@ export class FindsController {
   }
 
   // @UseGuards(JwtGuard)
-  @Get('categories')
+  @Post('categories')
   async getAllCategories(): Promise<CategoryDto[]> {
     return this.findsService.getAllCategories();
   }
