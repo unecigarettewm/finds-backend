@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserProfileDto } from './dto/userProfile.dto';
 import { ReqUser, ReqUserType } from 'src/auth/util/user.decorator';
 import { AuthUserDto } from './dto/authUser.dto';
@@ -28,6 +28,7 @@ export class UsersController {
     return this.usersService.getProfileAndFinds(Number(id));
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post('username/:username')
   async updateUsername(
@@ -37,12 +38,14 @@ export class UsersController {
     return this.usersService.updateUsername(username, user.userId.id);
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Get('user')
   async getUser(@ReqUser() user: ReqUserType): Promise<AuthUserDto> {
     return this.usersService.getUser(user.userId.id);
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post('follow/:id')
   async followUser(
@@ -52,6 +55,7 @@ export class UsersController {
     return this.usersService.followUser(id, user.userId.id);
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post('follow-status/:id')
   async getFollowStatus(

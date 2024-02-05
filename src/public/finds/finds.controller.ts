@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { FindsService } from './finds.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FindDto } from './dto/find.dto';
 import { ReqUser, ReqUserType } from 'src/auth/util/user.decorator';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -34,6 +34,7 @@ export class FindsController {
     return this.findsService.getFindById(Number(findId));
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post('create')
   async createFind(

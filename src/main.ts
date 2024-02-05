@@ -12,6 +12,7 @@ async function bootstrap() {
   app.use(passport.initialize());
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Finds')
     .setDescription('The Finds API description')
     .setVersion('1.0')

@@ -3,7 +3,7 @@ import { SavesService } from './saves.service';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ReqUser, ReqUserType } from 'src/auth/util/user.decorator';
 import { UserSaveDto } from './dto/userSave.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ActiveSaveDto } from './dto/activeSave.dto';
 import { SkipThrottle } from '@nestjs/throttler';
 
@@ -16,12 +16,14 @@ export class SavesController {
     this.logger = new Logger();
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Get('user-saves')
   async getUserSaves(@ReqUser() user: ReqUserType): Promise<UserSaveDto[]> {
     return this.savesService.getUserSaves(user.userId.id);
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @SkipThrottle()
   @Post('find-user-save')
@@ -32,6 +34,7 @@ export class SavesController {
     return this.savesService.getFindUserSave(id, user.userId.id);
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post('update-save')
   async updateSave(
