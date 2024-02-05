@@ -28,13 +28,7 @@ jobs:
       - name: Copy required files to output dir
         run: |
           cp package.json dist/
-          cp .yarnrc.yml dist/
           cp yarn.lock dist/
-          cp -r config dist/
-          cp -r .platform dist/
-          cp -r scripts dist/
-          mkdir dist/.yarn
-          cp -r .yarn/releases dist/.yarn/
           cp -r .npmrc dist/
 
       - name: Create deployment package
