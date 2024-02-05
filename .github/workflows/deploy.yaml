@@ -56,24 +56,13 @@ jobs:
         id: timestamp
         run: echo "::set-output name=timestamp::$(date +%Y%m%d%H%M%S)"
 
-      - name: Set deploy target URL
-        id: set_target
-        run: |
-          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-          echo "Deploying to production..."
-          echo "::set-output name=target_environment::NodeBackend-Prod"
-          else
-          echo "Deploying to test..."
-          echo "::set-output name=target_environment::NodeBackend-Test"
-          fi
-
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: FindsBackend
-          environment_name: ${{ steps.set_target.outputs.target_environment }}
+          environment_name: FindsBackend-env-1
           version_label: ${{ steps.timestamp.outputs.timestamp }}
           region: us-east-1
           deployment_package: deploy.zip
