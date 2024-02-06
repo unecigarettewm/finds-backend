@@ -9,6 +9,7 @@ import * as bcrypt from 'bcrypt';
 import { UserProfileDto } from './dto/userProfile.dto';
 import { AuthUserDto } from './dto/authUser.dto';
 import { FollowDto } from './dto/follow.dto';
+import { ProfileDto } from './dto/profile.dto';
 
 @Injectable()
 export class UsersService {
@@ -284,13 +285,20 @@ export class UsersService {
   }
 
   async updateUserAvatar(avatar: string, userId: number) {
-    return await this.prisma.user.update({
+    const res = await this.prisma.user.update({
       where: {
         id: userId,
       },
       data: {
         avatar,
       },
+    });
+
+    return new ProfileDto({
+      id: res.id,
+      firstname: res.firstname,
+      username: res.username,
+      avatar: res.avatar,
     });
   }
 }
