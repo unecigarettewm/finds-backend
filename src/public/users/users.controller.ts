@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   Logger,
@@ -63,5 +64,15 @@ export class UsersController {
     @ReqUser() user: ReqUserType,
   ): Promise<boolean> {
     return this.usersService.getFollowStatus(id, user.userId.id);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
+  @Post('update-user-avatar')
+  async updateUserAvatar(
+    @Body() { avatar }: { avatar: string },
+    @ReqUser() user: ReqUserType,
+  ) {
+    return this.usersService.updateUserAvatar(avatar, user.userId.id);
   }
 }
