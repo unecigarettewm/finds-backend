@@ -32,7 +32,7 @@ export class FindsController {
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post('following')
-  async followingFinds(@ReqUser() user: ReqUserType): Promise<any> {
+  async followingFinds(@ReqUser() user: ReqUserType): Promise<FindDto[]> {
     return this.findsService.getFollowingFinds(user.userId.id);
   }
 
