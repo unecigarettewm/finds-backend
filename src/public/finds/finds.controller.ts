@@ -29,6 +29,13 @@ export class FindsController {
     return this.findsService.getAllFinds();
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
+  @Post('following')
+  async followingFinds(@ReqUser() user: ReqUserType): Promise<any> {
+    return this.findsService.getFollowingFinds(user.userId.id);
+  }
+
   @Get(':id')
   async getFindById(@Param('id') findId: string): Promise<FindDto> {
     return this.findsService.getFindById(Number(findId));
@@ -44,7 +51,6 @@ export class FindsController {
     return this.findsService.createFind(user.userId.id, createFindDto);
   }
 
-  // @UseGuards(JwtGuard)
   @Post('categories')
   async getAllCategories(): Promise<CategoryDto[]> {
     return this.findsService.getAllCategories();
