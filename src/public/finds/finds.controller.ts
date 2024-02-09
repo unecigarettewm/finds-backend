@@ -24,8 +24,6 @@ export class FindsController {
     this.logger = new Logger();
   }
 
-  @ApiBearerAuth()
-  @UseGuards(JwtGuard)
   @Get('all')
   async allFinds(): Promise<FindDto[]> {
     return this.findsService.getAllFinds();
