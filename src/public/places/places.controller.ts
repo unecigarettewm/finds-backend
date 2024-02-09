@@ -1,7 +1,8 @@
-import { Controller, Get, Logger, Param } from '@nestjs/common';
+import { Controller, Get, Logger, Param, UseGuards } from '@nestjs/common';
 import { PlacesService } from './places.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PlaceWithFindsDto } from './dto/placeWithFinds.dto';
+import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @ApiTags('places')
 @Controller('place')
@@ -12,6 +13,8 @@ export class PlacesController {
     this.logger = new Logger();
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
   @Get(':id')
   async getPlaceByGoogleId(
     @Param('id') id: string,
