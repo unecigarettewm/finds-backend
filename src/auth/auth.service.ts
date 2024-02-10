@@ -64,6 +64,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid JWT');
     }
 
+    if (data.aud !== 'com.jacobbinnie.findsios') {
+      throw new UnauthorizedException('Invalid JWT');
+    }
+
     const existingUser = await this.userService.findOneWithEmail(data.email);
 
     if (existingUser) {
