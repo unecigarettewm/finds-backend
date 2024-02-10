@@ -269,6 +269,25 @@ export class UsersService {
     });
   }
 
+  async updateFirstname(firstname: string, userId: number) {
+    const user = await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        firstname,
+      },
+    });
+
+    return new AuthUserDto({
+      email: user.email,
+      firstname: user.firstname,
+      id: user.id,
+      username: user.username,
+      avatar: user.avatar,
+    });
+  }
+
   async updateUserAvatar(avatar: string, userId: number) {
     const res = await this.prisma.user.update({
       where: {

@@ -43,6 +43,16 @@ export class UsersController {
 
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
+  @Post('firstname/:firstname')
+  async updateFirstname(
+    @Param('firstname') firstname: string,
+    @ReqUser() user: ReqUserType,
+  ): Promise<AuthUserDto> {
+    return this.usersService.updateFirstname(firstname, user.userId.id);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
   @Get('user')
   async getUser(@ReqUser() user: ReqUserType): Promise<AuthUserDto> {
     return this.usersService.getUser(user.userId.id);
