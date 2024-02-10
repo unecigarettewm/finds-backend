@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/public/users/users.service';
 import { User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from 'src/public/users/dto/createUser.dto';
 import { AuthUserDto } from 'src/public/users/dto/authUser.dto';
 import { LoginResDto } from './dto/loginResDto';
@@ -13,16 +12,6 @@ export class AuthService {
     private userService: UsersService,
     private jwtService: JwtService,
   ) {}
-
-  async validateUser(username: string, password: string) {
-    const user = await this.userService.findOneWithEmail(username);
-
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
-  }
 
   async login(user: User) {
     const payload = {
@@ -64,5 +53,25 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async registerOrLoginWithApple(jwt: string) {
+    // decode JWT
+    const data = this.jwtService.decode(jwt, { json: true });
+    // TODO: verify JWT is from Apple here
+
+    if (!data.email) {
+      throw new UnauthorizedException('Invalid JWT');
+    }
+
+    const existingUser = await this.userService.findOneWithEmail(data.email);
+
+    if (existingUser) {
+      return this.login(existingUser);
+    } else {
+      return this.createUser({
+        email: data.email,
+      });
+    }
   }
 }

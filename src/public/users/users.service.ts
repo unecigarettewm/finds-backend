@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserDto } from './dto/createUser.dto';
-import * as bcrypt from 'bcrypt';
 import { UserProfileDto } from './dto/userProfile.dto';
 import { AuthUserDto } from './dto/authUser.dto';
 import { FollowDto } from './dto/follow.dto';
@@ -147,16 +146,6 @@ export class UsersService {
     });
   }
 
-  async doesUserExist(data: CreateUserDto) {
-    const user = await this.prisma.user.findFirst({
-      where: {
-        email: data.email,
-      },
-    });
-
-    return !!user;
-  }
-
   async create(data: CreateUserDto) {
     const existingUser = await this.prisma.user.findFirst({
       where: {
@@ -171,13 +160,9 @@ export class UsersService {
       throw new ConflictException('User already exists');
     }
 
-    const hash = await bcrypt.hash(data.password, 10);
-
     return await this.prisma.user.create({
       data: {
-        firstname: data.firstname,
         email: data.email,
-        password: hash,
       },
     });
   }

@@ -9,15 +9,17 @@ export class AuthUserDto extends Dto<AuthUserDto> {
 
   @ApiProperty()
   @IsString()
-  username: string;
-
-  @ApiProperty()
-  @IsString()
-  firstname: string;
-
-  @ApiProperty()
-  @IsString()
   email: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  username?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  firstname?: string;
 
   @ApiProperty()
   @IsString()

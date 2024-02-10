@@ -30,4 +30,9 @@ export class AuthController {
   async refreshToken(@Request() req) {
     return await this.authService.refreshToken(req.user);
   }
+
+  @Post('registerOrLoginWithApple')
+  async registerOrLoginWithApple(@Body() { jwt }: { jwt: string }) {
+    return await this.authService.registerOrLoginWithApple(jwt);
+  }
 }
