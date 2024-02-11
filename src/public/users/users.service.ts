@@ -170,7 +170,9 @@ export class UsersService {
   async getProfileAndFinds(userId: number) {
     const profile = await this.prisma.user.findFirst({
       where: {
-        id: userId,
+        id: {
+          equals: userId,
+        },
       },
       include: {
         followers: true,

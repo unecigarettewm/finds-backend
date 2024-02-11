@@ -28,7 +28,7 @@ export class UsersController {
   @UseGuards(JwtGuard)
   @Post('profile/:id')
   async getProfileAndFinds(@Param('id') id: number): Promise<UserProfileDto> {
-    return this.usersService.getProfileAndFinds(Number(id));
+    return this.usersService.getProfileAndFinds(id);
   }
 
   @ApiBearerAuth()
