@@ -242,7 +242,7 @@ export class FindsService {
   }
 
   async getFindById(findId: number) {
-    const find = await this.prisma.find.findFirst({
+    const find = await this.prisma.find.findUnique({
       where: {
         id: findId,
       },

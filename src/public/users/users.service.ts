@@ -34,7 +34,7 @@ export class UsersService {
   }
 
   async followUser(userId: number, followerId: number) {
-    const user = await this.prisma.user.findFirst({
+    const user = await this.prisma.user.findUnique({
       where: {
         id: Number(userId),
       },
@@ -44,7 +44,7 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    const follower = await this.prisma.user.findFirst({
+    const follower = await this.prisma.user.findUnique({
       where: {
         id: followerId,
       },
@@ -119,7 +119,7 @@ export class UsersService {
   }
 
   async getUser(userId: number) {
-    const user = await this.prisma.user.findFirst({
+    const user = await this.prisma.user.findUnique({
       where: {
         id: userId,
       },
@@ -139,7 +139,7 @@ export class UsersService {
   }
 
   async findOneWithEmail(username: string) {
-    return await this.prisma.user.findFirst({
+    return await this.prisma.user.findUnique({
       where: {
         email: username,
       },
@@ -168,11 +168,9 @@ export class UsersService {
   }
 
   async getProfileAndFinds(userId: number) {
-    const profile = await this.prisma.user.findFirst({
+    const profile = await this.prisma.user.findUnique({
       where: {
-        id: {
-          equals: userId,
-        },
+        id: userId,
       },
       include: {
         followers: true,

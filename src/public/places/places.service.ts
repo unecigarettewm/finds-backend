@@ -20,7 +20,7 @@ export class PlacesService {
   }
 
   async getPlaceByGoogleId(id: string) {
-    const place = await this.prisma.place.findFirst({
+    const place = await this.prisma.place.findUnique({
       where: {
         google_place_id: id,
       },
@@ -34,7 +34,7 @@ export class PlacesService {
   }
 
   async getPlaceWithFinds(id: string) {
-    const place = await this.prisma.place.findFirst({
+    const place = await this.prisma.place.findUnique({
       where: {
         google_place_id: id,
       },
