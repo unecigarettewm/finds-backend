@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Logger,
-  Param,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Logger, Post, UseGuards } from '@nestjs/common';
 import { FindsService } from './finds.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FindDto } from './dto/find.dto';
@@ -37,9 +30,9 @@ export class FindsController {
 
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  @Post(':id')
-  async getFindById(@Param('id') findId: string): Promise<FindDto> {
-    return this.findsService.getFindById(Number(findId));
+  @Post('find')
+  async getFindById(@Body() { id }: { id: string }): Promise<FindDto> {
+    return this.findsService.getFindById(Number(id));
   }
 
   @ApiBearerAuth()
