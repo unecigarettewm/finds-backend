@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Controller, Param, Post, UseGuards } from '@nestjs/common';
 import { SearchService } from './search.service';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -19,7 +19,7 @@ export class SearchController {
 
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  @Get('place/:id')
+  @Post('place/:id')
   async getGooglePlaceById(@Param('id') id: string): Promise<GooglePlaceDto> {
     return this.searchService.getGooglePlaceById(id);
   }

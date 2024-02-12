@@ -14,11 +14,11 @@ import { ProfileDto } from './dto/profile.dto';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async getFollowStatus(userId: number, followerId: number) {
+  async getFollowStatus(userId: string, followerId: string) {
     const existingRecord = await this.prisma.follower.findFirst({
       where: {
         followerId: followerId,
-        followingId: Number(userId),
+        followingId: userId,
       },
     });
 
@@ -33,10 +33,10 @@ export class UsersService {
     }
   }
 
-  async followUser(userId: number, followerId: number) {
+  async followUser(userId: string, followerId: string) {
     const user = await this.prisma.user.findUnique({
       where: {
-        id: Number(userId),
+        id: userId,
       },
     });
 
@@ -57,7 +57,7 @@ export class UsersService {
     const existingRecord = await this.prisma.follower.findFirst({
       where: {
         followerId: followerId,
-        followingId: Number(userId),
+        followingId: userId,
       },
     });
 
@@ -102,7 +102,7 @@ export class UsersService {
     } else {
       const res = await this.prisma.follower.create({
         data: {
-          followingId: Number(userId),
+          followingId: userId,
           followerId: followerId,
         },
       });
@@ -118,7 +118,7 @@ export class UsersService {
     }
   }
 
-  async getUser(userId: number) {
+  async getUser(userId: string) {
     const user = await this.prisma.user.findUnique({
       where: {
         id: userId,
@@ -167,7 +167,7 @@ export class UsersService {
     });
   }
 
-  async getProfileAndFinds(userId: number) {
+  async getProfileAndFinds(userId: string) {
     const profile = await this.prisma.user.findUnique({
       where: {
         id: userId,
@@ -226,7 +226,7 @@ export class UsersService {
     });
   }
 
-  async updateUsername(username: string, userId: number) {
+  async updateUsername(username: string, userId: string) {
     if (username.length < 3) {
       throw new ConflictException('Username must be at least 3 characters');
     }
@@ -269,7 +269,7 @@ export class UsersService {
     });
   }
 
-  async updateFirstname(firstname: string, userId: number) {
+  async updateFirstname(firstname: string, userId: string) {
     const user = await this.prisma.user.update({
       where: {
         id: userId,
@@ -288,7 +288,7 @@ export class UsersService {
     });
   }
 
-  async updateUserAvatar(avatar: string, userId: number) {
+  async updateUserAvatar(avatar: string, userId: string) {
     const res = await this.prisma.user.update({
       where: {
         id: userId,

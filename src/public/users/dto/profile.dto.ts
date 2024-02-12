@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { Dto } from 'src/lib/dto/Dto';
 
 export class ProfileDto extends Dto<ProfileDto> {
   @ApiProperty()
-  @IsNumber()
-  id: number;
+  @IsString()
+  id: string;
 
   @ApiProperty()
   @IsString()

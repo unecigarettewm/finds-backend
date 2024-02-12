@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Dto } from 'src/lib/dto/Dto';
 
 export class ActiveSaveDto extends Dto<ActiveSaveDto> {
@@ -9,9 +9,9 @@ export class ActiveSaveDto extends Dto<ActiveSaveDto> {
   id: number;
 
   @ApiProperty()
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  userId: number;
+  userId: string;
 
   @ApiProperty()
   @IsNumber()

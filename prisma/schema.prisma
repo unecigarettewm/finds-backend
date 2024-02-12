@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id         Int        @id @default(autoincrement())
+  id         String     @id @default(uuid())
   email      String     @unique
   firstname  String?
   username   String?    @unique
@@ -33,7 +33,7 @@ model Find {
   categoryId Int
   published  Boolean?  @default(true)
   user       User?     @relation(fields: [userId], references: [id])
-  userId     Int
+  userId     String
   images     String[]  @default([])
   place      Place?    @relation(fields: [placeId], references: [id])
   placeId    Int
@@ -58,10 +58,10 @@ model Place {
 
 model Save {
   id         Int       @id @default(autoincrement())
-  user       User?     @relation(fields: [userId], references: [id])
-  userId     Int?
-  find       Find?     @relation(fields: [findId], references: [id])
-  findId     Int?
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  find       Find      @relation(fields: [findId], references: [id])
+  findId     Int
   created_at DateTime  @default(now())
   updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
@@ -79,9 +79,9 @@ model Category {
 model Follower {
   id          Int       @id @default(autoincrement())
   follower    User      @relation("followers", fields: [followerId], references: [id])
-  followerId  Int
+  followerId  String
   following   User      @relation("following", fields: [followingId], references: [id])
-  followingId Int
+  followingId String
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
   deleted_at  DateTime?

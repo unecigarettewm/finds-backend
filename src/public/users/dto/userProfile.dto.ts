@@ -5,8 +5,8 @@ import { FindDto } from 'src/public/finds/dto/find.dto';
 
 export class UserProfileDto extends Dto<UserProfileDto> {
   @ApiProperty()
-  @IsNumber()
-  id: number;
+  @IsString()
+  id: string;
 
   @ApiProperty()
   @IsString()

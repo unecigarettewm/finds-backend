@@ -8,12 +8,10 @@ import { ActiveSaveDto } from './dto/activeSave.dto';
 export class SavesService {
   constructor(private prisma: PrismaService) {}
 
-  async getUserSaves(userId: number) {
+  async getUserSaves(userId: string) {
     const saves = await this.prisma.save.findMany({
       where: {
-        user: {
-          id: userId,
-        },
+        userId,
         deleted_at: null,
       },
       orderBy: {
@@ -63,7 +61,7 @@ export class SavesService {
     );
   }
 
-  async getFindUserSave(findId: number, userId: number) {
+  async getFindUserSave(findId: number, userId: string) {
     const save = await this.prisma.save.findFirst({
       where: {
         find: {
@@ -87,7 +85,7 @@ export class SavesService {
     });
   }
 
-  async updateSave(findId: number, userId: number) {
+  async updateSave(findId: number, userId: string) {
     const existingSave = await this.prisma.save.findFirst({
       where: {
         findId,

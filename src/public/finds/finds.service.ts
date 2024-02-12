@@ -64,7 +64,7 @@ export class FindsService {
     );
   }
 
-  async getFollowingFinds(userId: number) {
+  async getFollowingFinds(userId: string) {
     const following = await this.prisma.follower.findMany({
       where: {
         followerId: userId,
@@ -118,7 +118,7 @@ export class FindsService {
     );
   }
 
-  async createFind(userId: number, createFindDto: CreateFindDto) {
+  async createFind(userId: string, createFindDto: CreateFindDto) {
     const { googlePlaceId, review, categoryId, images, tags } = createFindDto;
 
     if (!googlePlaceId) {

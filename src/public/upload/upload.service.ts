@@ -25,7 +25,7 @@ export class UploadService {
 
   async upload(
     files: Express.Multer.File[],
-    userId: number,
+    userId: string,
   ): Promise<string[]> {
     const uploadedUris: string[] = [];
 

@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   Logger,
   Param,
   Post,
@@ -24,7 +23,7 @@ export class FindsController {
     this.logger = new Logger();
   }
 
-  @Get('all')
+  @Post('all')
   async allFinds(): Promise<FindDto[]> {
     return this.findsService.getAllFinds();
   }
@@ -38,7 +37,7 @@ export class FindsController {
 
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  @Get(':id')
+  @Post(':id')
   async getFindById(@Param('id') findId: string): Promise<FindDto> {
     return this.findsService.getFindById(Number(findId));
   }

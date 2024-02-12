@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   Logger,
   Param,
   Post,
@@ -27,8 +26,8 @@ export class UsersController {
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post('profile/:id')
-  async getProfileAndFinds(@Param('id') id: number): Promise<UserProfileDto> {
-    return this.usersService.getProfileAndFinds(Number(id));
+  async getProfileAndFinds(@Param('id') id: string): Promise<UserProfileDto> {
+    return this.usersService.getProfileAndFinds(id);
   }
 
   @ApiBearerAuth()
@@ -53,7 +52,7 @@ export class UsersController {
 
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  @Get('user')
+  @Post('user')
   async getUser(@ReqUser() user: ReqUserType): Promise<AuthUserDto> {
     return this.usersService.getUser(user.userId.id);
   }
@@ -62,7 +61,7 @@ export class UsersController {
   @UseGuards(JwtGuard)
   @Post('follow/:id')
   async followUser(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @ReqUser() user: ReqUserType,
   ): Promise<FollowDto> {
     return this.usersService.followUser(id, user.userId.id);
@@ -72,7 +71,7 @@ export class UsersController {
   @UseGuards(JwtGuard)
   @Post('follow-status/:id')
   async getFollowStatus(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @ReqUser() user: ReqUserType,
   ): Promise<boolean> {
     return this.usersService.getFollowStatus(id, user.userId.id);

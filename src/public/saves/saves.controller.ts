@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Logger, Post, UseGuards } from '@nestjs/common';
 import { SavesService } from './saves.service';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ReqUser, ReqUserType } from 'src/auth/util/user.decorator';
@@ -18,7 +18,7 @@ export class SavesController {
 
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  @Get('user-saves')
+  @Post('user-saves')
   async getUserSaves(@ReqUser() user: ReqUserType): Promise<UserSaveDto[]> {
     return this.savesService.getUserSaves(user.userId.id);
   }

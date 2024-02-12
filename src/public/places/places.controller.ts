@@ -1,4 +1,4 @@
-import { Controller, Get, Logger, Param, UseGuards } from '@nestjs/common';
+import { Controller, Logger, Param, Post, UseGuards } from '@nestjs/common';
 import { PlacesService } from './places.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PlaceWithFindsDto } from './dto/placeWithFinds.dto';
@@ -15,7 +15,7 @@ export class PlacesController {
 
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  @Get(':id')
+  @Post(':id')
   async getPlaceByGoogleId(
     @Param('id') id: string,
   ): Promise<PlaceWithFindsDto> {

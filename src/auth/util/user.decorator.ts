@@ -7,7 +7,7 @@ import { Request } from 'express';
 
 export interface ReqUserType {
   userId: {
-    id: number;
+    id: string;
   };
   username: string;
 }
