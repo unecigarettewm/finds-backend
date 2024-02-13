@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { UserSaveDto } from './dto/userSave.dto';
 import { CategoryDto } from '../finds/dto/category.dto';
@@ -15,7 +15,7 @@ export class SavesService {
         deleted_at: null,
       },
       orderBy: {
-        created_at: 'desc',
+        updated_at: 'desc',
       },
       include: {
         find: {
@@ -86,6 +86,10 @@ export class SavesService {
   }
 
   async updateSave(findId: number, userId: string) {
+    if (!userId) {
+      throw new UnauthorizedException();
+    }
+
     const existingSave = await this.prisma.save.findFirst({
       where: {
         findId,

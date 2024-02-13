@@ -119,6 +119,10 @@ export class UsersService {
   }
 
   async getUser(userId: string) {
+    if (!userId) {
+      throw new NotFoundException('User not found');
+    }
+
     const user = await this.prisma.user.findUnique({
       where: {
         id: userId,
@@ -126,7 +130,7 @@ export class UsersService {
     });
 
     if (!user) {
-      return null;
+      throw new NotFoundException('User not found');
     }
 
     return new AuthUserDto({
