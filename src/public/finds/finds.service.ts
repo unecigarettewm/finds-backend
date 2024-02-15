@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   PreconditionFailedException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { FindDto } from './dto/find.dto';
@@ -222,7 +223,11 @@ export class FindsService {
     });
   }
 
-  async getAllCategories() {
+  async getAllCategories(userId: string) {
+    if (!userId) {
+      throw new UnauthorizedException('Missing user id');
+    }
+
     const categories = await this.prisma.category.findMany({
       where: {
         deleted_at: null,

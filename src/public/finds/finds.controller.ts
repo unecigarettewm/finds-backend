@@ -50,7 +50,7 @@ export class FindsController {
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post('categories')
-  async getAllCategories(): Promise<CategoryDto[]> {
-    return this.findsService.getAllCategories();
+  async getAllCategories(@ReqUser() user: ReqUserType): Promise<CategoryDto[]> {
+    return this.findsService.getAllCategories(user.userId.id);
   }
 }
