@@ -245,7 +245,7 @@ export class UsersService {
       );
     }
 
-    const usernameTaken = await this.prisma.user.findFirst({
+    const usernameTaken = await this.prisma.user.findUnique({
       where: {
         username,
       },
