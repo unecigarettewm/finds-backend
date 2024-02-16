@@ -8,8 +8,8 @@ async function bootstrap() {
     logger: ['error', 'warn', 'log'],
   });
   app.enableCors({
-    origin: 'http://finds.nyc',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    origin: ['http://finds.nyc', 'https://finds.nyc'],
+    methods: ['GET', 'POST'],
     allowedHeaders: 'Content-Type,Authorization',
   });
 
