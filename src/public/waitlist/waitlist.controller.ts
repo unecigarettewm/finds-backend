@@ -6,7 +6,7 @@ import { WaitlistSignupDto } from './dto/waitlistSignup.dto';
 export class WaitlistController {
   constructor(private readonly waitlistService: WaitlistService) {}
 
-  @Post('join-waitlist')
+  @Post('join')
   async joinWaitlist(@Body() waitlistSignupDto: WaitlistSignupDto) {
     return this.waitlistService.signupToWaitlist(waitlistSignupDto);
   }
