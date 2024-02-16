@@ -86,3 +86,13 @@ model Follower {
   updated_at  DateTime  @updatedAt
   deleted_at  DateTime?
 }
+
+model Waitlister {
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  instagram  String
+  location   String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}

@@ -9,6 +9,7 @@ import { SearchModule } from './public/search/search.module';
 import { UploadModule } from './public/upload/upload.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { WaitlistModule } from './public/waitlist/waitlist.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { APP_GUARD } from '@nestjs/core';
         limit: 50,
       },
     ]),
+    WaitlistModule,
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
