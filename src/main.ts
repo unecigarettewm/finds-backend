@@ -7,7 +7,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['error', 'warn', 'log'],
   });
-  app.enableCors();
+  app.enableCors({
+    origin: 'https://finds.nyc',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type,Authorization',
+  });
 
   app.use(passport.initialize());
 
