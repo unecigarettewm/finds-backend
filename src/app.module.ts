@@ -10,6 +10,7 @@ import { UploadModule } from './public/upload/upload.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { WaitlistModule } from './public/waitlist/waitlist.module';
+import { LikesModule } from './public/likes/likes.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { WaitlistModule } from './public/waitlist/waitlist.module';
       },
     ]),
     WaitlistModule,
+    LikesModule,
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
