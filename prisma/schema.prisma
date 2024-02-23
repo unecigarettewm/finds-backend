@@ -24,6 +24,7 @@ model User {
   bio        String?
   following  Follower[] @relation("followers")
   followers  Follower[] @relation("following")
+  Like       Like[]
 }
 
 model Find {
@@ -38,6 +39,7 @@ model Find {
   place      Place?    @relation(fields: [placeId], references: [id])
   placeId    Int
   saves      Save[]
+  likes      Like[]
   tags       String[]  @default([])
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
@@ -94,5 +96,16 @@ model Waitlister {
   location   String
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
+
+model Like {
+  id         Int       @id @default(autoincrement())
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  find       Find      @relation(fields: [findId], references: [id])
+  findId     Int
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
 }
