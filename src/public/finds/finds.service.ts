@@ -163,8 +163,6 @@ export class FindsService {
       }
     }
 
-    // TODO: UPLOAD IMAGES HERE
-
     const newFind = await this.prisma.find.create({
       data: {
         review,
